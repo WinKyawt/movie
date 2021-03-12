@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mmvideo/movie.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:ext_video_player/ext_video_player.dart';
+import 'package:mmvideo/video_items.dart';
 
 class MovieDetail extends StatefulWidget {
   const MovieDetail({this.movie});
@@ -19,28 +19,53 @@ class _MovieDetailState extends State<MovieDetail> {
   @override
   void initState() {
     super.initState();
-    
-    if(widget.movie.title.contains('Tom')) {
+
+    if (widget.movie.title.contains('Tom')) {
+      curVideo = 'https://www.youtube.com/watch?v=kP9TfCWaQT4';
+    }
+    if (widget.movie.title.contains('Raya')) {
+      curVideo = 'https://www.youtube.com/watch?v=9BPMTr-NS9s';
+    }
+    if (widget.movie.title.contains('Monster')) {
+      curVideo = 'https://www.youtube.com/watch?v=3od-kQMTZ9M';
+    }
+    if (widget.movie.title.contains('Wonder')) {
+      curVideo = 'https://www.youtube.com/watch?v=kP9TfCWaQT4';
+    }
+    if (widget.movie.title.contains('Soul')) {
       curVideo = 'https://www.youtube.com/watch?v=kP9TfCWaQT4';
     } else {
       curVideo = 'assets/v1.mp4';
     }
-   }
+  }
 
-   @override
+  @override
   void dispose() {
     super.dispose();
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.movie.title),
+          flexibleSpace: Container(
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [
+                    const Color(0xFF86221A),
+                    const Color(0xFF1F1B18),
+                  ],
+                  begin: const FractionalOffset(0.0, 0.0),
+                  end: const FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
+          ),
         ),
         body: ListView(
-          children: [ 
-            _YoutubeVideo(url: curVideo),
+          children: [
+            YoutubeVideo(url: curVideo),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -97,93 +122,5 @@ class _MovieDetailState extends State<MovieDetail> {
             ),
           ],
         ));
-  }
-}
-
-class _YoutubeVideo extends StatefulWidget {
-  final String url;
- 
-   _YoutubeVideo({this.url});
-  @override
-  _YoutubeVideoState createState() => _YoutubeVideoState();
-}
-
-class _YoutubeVideoState extends State<_YoutubeVideo> {
-  VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = widget.url.contains('assets') ? VideoPlayerController.asset(widget.url): VideoPlayerController.network( widget.url
-      // youtubeVideoQuality: VideoQuality.high720,
-    ); 
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            VideoPlayer(_controller),
-            ClosedCaption(text: _controller.value.caption.text),
-            _PlayPauseOverlay(controller: _controller),
-            VideoProgressIndicator(
-              _controller,
-              allowScrubbing: true,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _PlayPauseOverlay extends StatelessWidget {
-  const _PlayPauseOverlay({Key key, this.controller}) : super(key: key);
-
-  final VideoPlayerController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: 50),
-          reverseDuration: Duration(milliseconds: 200),
-          child: controller.value.isPlaying
-              ? SizedBox.shrink()
-              : Container(
-                  color: Colors.black26,
-                  child: Center(
-                    child: Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                      size: 100.0,
-                    ),
-                  ),
-                ),
-        ),
-        GestureDetector(
-          onTap: () {
-            controller.value.isPlaying ? controller.pause() : controller.play();
-          },
-        ),
-      ],
-    );
   }
 }

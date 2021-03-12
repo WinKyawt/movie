@@ -40,6 +40,19 @@ class _HomeGridPageState extends State<HomeGridPage> {
         elevation: 0,
         centerTitle: true,
         automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [
+                   const Color(0xFF86221A),
+                  const Color(0xFF1F1B18),
+                ],
+                begin: const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp),
+          ),
+        ),
         title: Text('MMovie'),
         actions: [
           InkWell(

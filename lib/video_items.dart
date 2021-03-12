@@ -1,61 +1,95 @@
-import 'package:chewie/chewie.dart';
+import 'package:ext_video_player/ext_video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
-class VideoItems extends StatefulWidget {
-  final VideoPlayerController videoPlayerController;
-  final bool looping;
-  final bool autoplay;
-
-
-  VideoItems({
-    @required this.videoPlayerController,
-    this.looping, this.autoplay,
-    Key key,
-  }) : super(key: key);
-
+class YoutubeVideo extends StatefulWidget {
+  final String url;
+ 
+   YoutubeVideo({this.url});
   @override
-  _VideoItemsState createState() => _VideoItemsState();
+  YoutubeVideoState createState() => YoutubeVideoState();
 }
 
-class _VideoItemsState extends State<VideoItems> {
-  ChewieController _chewieController;
+class YoutubeVideoState extends State<YoutubeVideo> {
+  VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    _chewieController = ChewieController(
-      videoPlayerController: widget.videoPlayerController,
-      autoInitialize: true,
-      aspectRatio: 2,//
-      autoPlay: widget.autoplay,
-      looping: widget.looping,
-      errorBuilder: (context, errorMessage) {
-        return Center(
-          child: Text(
-            errorMessage,
-            style: TextStyle(color: Colors.white),
-          ),
-        );
-      },
-    );
+    _controller = widget.url.contains('assets') ? VideoPlayerController.asset(widget.url): VideoPlayerController.network( widget.url
+      // youtubeVideoQuality: VideoQuality.high720,
+    ); 
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    _controller.initialize();
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
-    _chewieController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
-      width: MediaQuery.of(context).size.width,
-      child: Chewie(
-        controller: _chewieController,
+      padding: const EdgeInsets.all(8),
+      margin: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.75),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+      child: AspectRatio(
+        aspectRatio: 6/4,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            VideoPlayer(_controller),
+            ClosedCaption(text: _controller.value.caption.text),
+            _PlayPauseOverlay(controller: _controller),
+            VideoProgressIndicator(
+              _controller,
+              allowScrubbing: true,
+            ),
+          ],
+        ),
       ),
     );
   }
+}
 
+class _PlayPauseOverlay extends StatelessWidget {
+  const _PlayPauseOverlay({Key key, this.controller}) : super(key: key);
+
+  final VideoPlayerController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 50),
+          reverseDuration: Duration(milliseconds: 200),
+          child: controller.value.isPlaying
+              ? SizedBox.shrink()
+              : Container(
+                  color: Colors.black26,
+                  child: Center(
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 100.0,
+                    ),
+                  ),
+                ),
+        ),
+        GestureDetector(
+          onTap: () {
+            controller.value.isPlaying ? controller.pause() : controller.play();
+          },
+        ),
+      ],
+    );
+  }
 }
