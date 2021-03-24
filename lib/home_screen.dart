@@ -6,23 +6,23 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[100],
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                colors: [
-                   const Color(0xFF86221A),
-                  const Color(0xFF1F1B18),
-                ],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp),
-          ),
-        ),
-        title: Text('xxVideo'),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   flexibleSpace: Container(
+      //     decoration: new BoxDecoration(
+      //       gradient: new LinearGradient(
+      //           colors: [
+      //              const Color(0xFF86221A),
+      //             const Color(0xFF1F1B18),
+      //           ],
+      //           begin: const FractionalOffset(0.0, 0.0),
+      //           end: const FractionalOffset(1.0, 0.0),
+      //           stops: [0.0, 1.0],
+      //           tileMode: TileMode.clamp),
+      //     ),
+      //   ),
+      //   title: Text('xxVideo'),
+      //   centerTitle: true,
+      // ),
       body: ListView(
         children: <Widget>[
           YoutubeVideo(url: 'assets/v1.mp4'),

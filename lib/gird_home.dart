@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:mmvideo/home_screen.dart';
 import 'package:mmvideo/movie.dart';
 import 'package:mmvideo/movie_detail.dart';
 
@@ -36,42 +35,42 @@ class _HomeGridPageState extends State<HomeGridPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                colors: [
-                   const Color(0xFF86221A),
-                  const Color(0xFF1F1B18),
-                ],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp),
-          ),
-        ),
-        title: Text('MMovie'),
-        actions: [
-          InkWell(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return HomeScreen();
-              }));
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(
-                Icons.menu,
-                size: 30,
-                color: Colors.white,
-              ),
-            ),
-          )
-        ],
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   automaticallyImplyLeading: false,
+      //   flexibleSpace: Container(
+      //     decoration: new BoxDecoration(
+      //       gradient: new LinearGradient(
+      //           colors: [
+      //              const Color(0xFF86221A),
+      //             const Color(0xFF1F1B18),
+      //           ],
+      //           begin: const FractionalOffset(0.0, 0.0),
+      //           end: const FractionalOffset(1.0, 0.0),
+      //           stops: [0.0, 1.0],
+      //           tileMode: TileMode.clamp),
+      //     ),
+      //   ),
+      //   title: Text('MMovie'),
+      //   actions: [
+      //     InkWell(
+      //       onTap: () {
+      //         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      //           return HomeScreen();
+      //         }));
+      //       },
+      //       child: Padding(
+      //         padding: const EdgeInsets.only(right: 8.0),
+      //         child: Icon(
+      //           Icons.menu,
+      //           size: 30,
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //     )
+      //   ],
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.extent(
@@ -82,6 +81,7 @@ class _HomeGridPageState extends State<HomeGridPage> {
           children: movies.map((movie) => _MovieBox(movie: movie)).toList(),
         ),
       ),
+       
     );
   }
 }

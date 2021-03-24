@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mmvideo/gird_home.dart';
+import 'package:mmvideo/pages/home_tabs.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
 
   void navigationPage() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return HomeGridPage();
+      return TabbedHomePage();
     }));
   }
 
